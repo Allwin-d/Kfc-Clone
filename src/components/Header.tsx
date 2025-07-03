@@ -12,6 +12,11 @@ const Header = () => {
     navigate("/ProductView");
   }
 
+  function handleSignIn(e:React.MouseEvent<HTMLHeadElement>){
+    e.preventDefault();
+    navigate("/SignIn")
+  }
+
   return (
     <div className="sticky top-0 z-50 bg-white shadow-md">
       {" "}
@@ -35,7 +40,7 @@ const Header = () => {
         </div>
         <div className="flex flex-row justify-end w-full space-x-8 mr-10">
           <FontAwesomeIcon icon={faUser} className="mt-4" />
-          <h3 className="mt-3 cursor-pointer">Sign In</h3>
+          <h3 className="mt-3 cursor-pointer" onClick={handleSignIn}>Sign In</h3>
           <img
             src={KfcCart}
             alt="Cart"
