@@ -19,3 +19,8 @@ export type Category = {
 };
 
 export type Menu = Category[];
+
+// ✅ NEW: CartItem type that extends Product with quantity
+export type CartItem = Product & {
+  quantity: number;
+};
