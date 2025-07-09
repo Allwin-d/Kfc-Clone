@@ -17,7 +17,7 @@ const cartSlice = createSlice({
         JSON.parse(JSON.stringify(state))
       ); // clone to avoid Immer proxy issues
       console.log("📦 Adding product:", action.payload);
-      const existingItem = state.find((item) =>  item.id === action.payload.id);
+      const existingItem = state.find((item) => item.id === action.payload.id);
 
       if (existingItem) {
         // ✅ If item exists, increase quantity
@@ -31,6 +31,10 @@ const cartSlice = createSlice({
         console.log("🆕 Item added:", action.payload.name);
       }
       console.log("🆕 Item added:", action.payload.name);
+      console.log(
+        "🛒 Current cart state AFTER:",
+        JSON.parse(JSON.stringify(state))
+      );
     },
 
     removeFromCart: (state, action: PayloadAction<number>) => {
@@ -68,6 +72,7 @@ const cartSlice = createSlice({
 
     // ✅ Clear entire cart
     clearCart: (state) => {
+      console.log(state);
       return [];
     },
   },

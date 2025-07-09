@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/CartSlice";
 import type { AppDispatch, RootState } from "../store/Store";
 import { useState } from "react";
+import Sidebar from "../components/Sidebar";
 
 const ProductView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,7 +35,6 @@ const ProductView = () => {
   const handleAddToCart = (product: Product) => {
     try {
       dispatch(addToCart(product));
-
       // ✅ Show visual feedback
       setAddedItems((prev) => new Set([...prev, product.id]));
 
@@ -83,107 +83,110 @@ const ProductView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 ">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
-          <p className="text-gray-600">Discover our delicious offerings</p>
-        </div>
+      <div className="w-full flex flex-row ">
+        <Sidebar  />
+        <div className="container mx-auto px-4 py-8 w-3/5 ml-96">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
+            <p className="text-gray-600">Discover our delicious offerings</p>
+          </div>
 
-        {data?.map((category) => (
-          <div key={category.id} className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold text-gray-800">
-                {category.category}
-              </h2>
-              <div className="h-1 flex-1 bg-gradient-to-r from-red-600 to-transparent ml-4"></div>
-            </div>
+          {data?.map((category) => (
+            <div key={category.id} className="mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-3xl font-bold text-gray-800">
+                  {category.category}
+                </h2>
+                <div className="h-1 flex-1 bg-gradient-to-r from-red-600 to-transparent ml-4"></div>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {category.products.map((product) => {
-                const quantity = getItemQuantity(product.id);
-                const isJustAdded = addedItems.has(product.id);
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {category.products.map((product) => {
+                  const quantity = getItemQuantity(product.id);
+                  const isJustAdded = addedItems.has(product.id);
 
-                return (
-                  <div
-                    key={product.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  >
-                    <div className="relative">
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="w-full h-48 object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src =
-                            "https://via.placeholder.com/300x200?text=No+Image";
-                        }}
-                      />
-                      {product.discount && (
-                        <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm font-semibold">
-                          {product.discount}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg mb-2 text-gray-800">
-                        {product.name}
-                      </h3>
-                      <p className="text-gray-600 mb-1 text-sm">
-                        {product.type}
-                      </p>
-
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-red-600 font-bold text-lg">
-                            ₹{product.price}
-                          </span>
-                          {product.originalPrice && (
-                            <span className="text-gray-400 line-through text-sm">
-                              ₹{product.originalPrice}
-                            </span>
-                          )}
-                        </div>
-                        {product.serves && (
-                          <span className="text-gray-500 text-sm">
-                            Serves {product.serves}
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                        {product.description}
-                      </p>
-
-                      <div className="flex items-center justify-between">
-                        <button
-                          className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                            isJustAdded
-                              ? "bg-green-600 text-white"
-                              : "bg-red-600 text-white hover:bg-red-700"
-                          }`}
-                          onClick={() => handleAddToCart(product)}
-                          disabled={isJustAdded} // ✅ Prevent multiple clicks during feedback
-                        >
-                          {isJustAdded ? "Added! ✓" : "Add to Cart"}
-                        </button>
-
-                        {quantity > 0 && (
-                          <div className="ml-3 bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-                            {quantity} in cart
+                  return (
+                    <div
+                      key={product.id}
+                      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    >
+                      <div className="relative">
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="w-full h-48 object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src =
+                              "https://via.placeholder.com/300x200?text=No+Image";
+                          }}
+                        />
+                        {product.discount && (
+                          <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm font-semibold">
+                            {product.discount}
                           </div>
                         )}
                       </div>
+
+                      <div className="p-4">
+                        <h3 className="font-semibold text-lg mb-2 text-gray-800">
+                          {product.name}
+                        </h3>
+                        <p className="text-gray-600 mb-1 text-sm">
+                          {product.type}
+                        </p>
+
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-red-600 font-bold text-lg">
+                              ₹{product.price}
+                            </span>
+                            {product.originalPrice && (
+                              <span className="text-gray-400 line-through text-sm">
+                                ₹{product.originalPrice}
+                              </span>
+                            )}
+                          </div>
+                          {product.serves && (
+                            <span className="text-gray-500 text-sm">
+                              Serves {product.serves}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+                          {product.description}
+                        </p>
+
+                        <div className="flex items-center justify-between">
+                          <button
+                            className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                              isJustAdded
+                                ? "bg-green-600 text-white"
+                                : "bg-red-600 text-white hover:bg-red-700"
+                            }`}
+                            onClick={() => handleAddToCart(product)}
+                            disabled={isJustAdded} // ✅ Prevent multiple clicks during feedback
+                          >
+                            {isJustAdded ? "Added! ✓" : "Add to Cart"}
+                          </button>
+
+                          {quantity > 0 && (
+                            <div className="ml-3 bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                              {quantity} in cart
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+
       <Footer />
     </div>
   );

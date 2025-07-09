@@ -9,8 +9,10 @@ import {
   decreaseQuantity,
   clearCart,
 } from "../slices/CartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const cartItems = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,7 +51,7 @@ const Cart = () => {
           <h1 className="text-2xl font-bold">MY CART ({totalItems} items)</h1>
           {cartItems.length > 0 && (
             <button
-              onClick={handleClearCart}
+              onClick={() => handleClearCart}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
             >
               Clear Cart
@@ -141,7 +143,14 @@ const Cart = () => {
                   ₹{totalPrice.toFixed(2)}
                 </span>
               </div>
-              <button className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold text-lg">
+              <button
+                className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold text-lg"
+                onClick={() =>
+                  navigate("/CheckOut", {
+                    state:{price:totalPrice,items:totalItems},
+                  })
+                }
+              >
                 Proceed to Checkout
               </button>
             </div>
