@@ -3,91 +3,105 @@ import Header from "../components/Header";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
+import Modal from "../components/Modal";
+import CardDetails from "../components/CardDetails";
+import UpiDetails from "../components/UpiDetails";
 
-type propsType = {
+type PropsType = {
   price: number;
   items: number;
 };
 
-type userDetails = {
-  fullname: string;
-  phone: string;
-  deliveryAddress: string;
-};
-
 const CheckOut = () => {
   const location = useLocation();
-  const [userData, setuserData] = useState<userDetails>({
+  const { price, items } = location.state as PropsType;
+  const [selection, setSelection] = useState("");
+
+  const [userData, setUserData] = useState({
     fullname: "",
     phone: "",
     deliveryAddress: "",
   });
 
-  const [payment, setPayment] = useState<boolean>(false);
+  const [cardDetails, setCardDetails] = useState({
+    cardname: "",
+    cardnumber: "",
+    monthyear: "",
+    cvv: "",
+  });
+
+  const [upiDetails, setUpiDetails] = useState({
+    upidetail: "",
+  });
+
+  const [modal, setModal] = useState(false);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    console.log(e.target.value, " this is value ");
-    console.log(e.target.name, " this is Name ");
     const { name, value } = e.target;
-    setuserData((prevData) => ({
-      ...prevData,
+    setUserData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   }
 
   function handlePayment(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+
     if (
       userData.fullname !== "" &&
       userData.phone !== "" &&
       userData.deliveryAddress !== ""
     ) {
-      console.log("Everything is filled ");
       toast.success("User Details Added");
+      setModal(true);
     } else {
-      toast.error("Fill The Details ");
-      console.log("You need to fill the details first ");
+      toast.error("Fill the details");
     }
   }
 
-  console.log(location);
-  const { price, items } = location.state as propsType;
+  function handleRadio(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e.target.value, "this is from handleRadio ");
+    setSelection(e.target.value);
+  }
 
   return (
-    <div className="min-h-screen w-full  ">
+    <div className="min-h-screen w-full">
       <Header />
-      <div className="flex flex-row  mt-10 m-20 justify-between items-center ">
-        <div className="w-3/5 bg-gray-200 p-8 rounded-lg">
-          <form className="">
+      <div className="flex flex-row mt-10 m-20 justify-between items-center">
+        <div className="w-3/5 bg-gray-100 p-8 rounded-lg">
+          <form>
             <fieldset className="flex flex-col space-y-8">
               <legend className="font-bold text-4xl">Customer Details</legend>
               <input
                 type="text"
-                placeholder="Full Name * "
-                className="p-3 font-medium  focus:outline-none"
-                onChange={handleChange}
                 name="fullname"
-              ></input>
+                placeholder="Full Name *"
+                value={userData.fullname}
+                onChange={handleChange}
+                className="p-3 font-medium focus:outline-none"
+              />
               <input
                 type="number"
                 name="phone"
+                placeholder="Phone Number *"
                 onChange={handleChange}
-                placeholder="Phone Number * "
+                value={userData.phone}
                 className="p-3 font-medium focus:outline-none"
-              ></input>
+              />
               <textarea
                 name="deliveryAddress"
+                value={userData.deliveryAddress}
+                placeholder="Delivery Address *"
                 onChange={handleChange}
-                placeholder="Delivery Address * "
-                className=" p-3 font-medium focus:outline-none"
+                className="p-3 font-medium focus:outline-none"
                 rows={3}
               ></textarea>
               <div>
                 <button
-                  className="text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all duration-200 "
                   onClick={handlePayment}
+                  className="text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all duration-200"
                 >
                   Select Payment
                 </button>
@@ -96,19 +110,141 @@ const CheckOut = () => {
           </form>
         </div>
 
-        <div className="w-1/5  border-4 p-10 ">
+        <div className="w-1/5 border-4 p-10">
           <div className="flex flex-col space-y-8">
-            <p className="font-bold text-black text-3xl">{items} Items </p>
+            <p className="font-bold text-black text-3xl">{items} Items</p>
             <p className="font-semibold text-gray-600">
               Total Amount : ₹ {price}
             </p>
-            <hr></hr>
+            <hr />
             <button className="bg-gray-300 p-3 rounded-3xl cursor-pointer font-semibold">
-              Continue to Payment {price}
+              Continue to Payment ₹{price}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal}
+        onClose={() => setModal(false)}
+        onSubmit={() => {
+          if (!selection) {
+            toast.error("Please select a payment method");
+            return;
+          }
+
+          if (selection === "Credit / Debit Card") {
+            const { cardname, cardnumber, monthyear, cvv } = cardDetails;
+            if (!cardname || !cardnumber || !monthyear || !cvv) {
+              toast.error("Fill in all card details");
+              return;
+            }
+          }
+
+          if (selection === "UPI") {
+            if (!upiDetails.upidetail) {
+              toast.error("Please enter a valid UPI ID");
+              return;
+            }
+          }
+
+          toast.success(`${selection} selected successfully`);
+          setModal(false);
+
+          setCardDetails({
+            cardname: "",
+            cardnumber: "",
+            monthyear: "",
+            cvv: "",
+          });
+
+          setUpiDetails({
+            upidetail: "",
+          });
+
+          setUserData({
+            fullname: "",
+            phone: "",
+            deliveryAddress: "",
+          });
+        }}
+      >
+        {/* Payment Method Inputs */}
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          Select Your Payment Method
+        </h2>
+
+        <div className="space-y-3">
+          {/* Credit / Debit Card */}
+          <label
+            className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+              selection === "Credit / Debit Card"
+                ? "border-red-600 bg-red-50"
+                : "border-gray-300"
+            }`}
+          >
+            <input
+              type="radio"
+              name="payment"
+              value="Credit / Debit Card"
+              checked={selection === "Credit / Debit Card"}
+              onChange={handleRadio}
+              className="form-radio accent-red-600"
+            />
+            <span className="text-base font-medium">Credit / Debit Card</span>
+          </label>
+          {selection === "Credit / Debit Card" && (
+            <div className="pl-6">
+              <CardDetails card={cardDetails} setCard={setCardDetails} />
+            </div>
+          )}
+
+          {/* Cash */}
+          <label
+            className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+              selection === "Cash"
+                ? "border-red-600 bg-red-50"
+                : "border-gray-300"
+            }`}
+          >
+            <input
+              type="radio"
+              name="payment"
+              value="Cash"
+              checked={selection === "Cash"}
+              onChange={handleRadio}
+              className="form-radio accent-red-600"
+            />
+            <span className="text-base font-medium">Cash</span>
+          </label>
+
+          {/* UPI */}
+          <label
+            className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+              selection === "UPI"
+                ? "border-red-600 bg-red-50"
+                : "border-gray-300"
+            }`}
+          >
+            <input
+              type="radio"
+              name="payment"
+              value="UPI"
+              checked={selection === "UPI"}
+              onChange={handleRadio}
+              className="form-radio accent-red-600"
+            />
+            <span className="text-base font-medium">UPI</span>
+          </label>
+          {selection === "UPI" && (
+            <div className="pl-6">
+              <UpiDetails upi={upiDetails} setUpi={setUpiDetails} />
+            </div>
+          )}
+        </div>
+      </Modal>
+
       <ToastContainer
         position="top-right"
         autoClose={3000}
