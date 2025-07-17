@@ -7,6 +7,7 @@ import Modal from "../components/Modal";
 import CardDetails from "../components/CardDetails";
 import UpiDetails from "../components/UpiDetails";
 
+
 type PropsType = {
   price: number;
   items: number;
@@ -16,6 +17,8 @@ const CheckOut = () => {
   const location = useLocation();
   const { price, items } = location.state as PropsType;
   const [selection, setSelection] = useState("");
+  const [checkPayment, setCheckPayment] = useState(false);
+
 
   const [userData, setUserData] = useState({
     fullname: "",
@@ -117,7 +120,13 @@ const CheckOut = () => {
               Total Amount : ₹ {price}
             </p>
             <hr />
-            <button className="bg-gray-300 p-3 rounded-3xl cursor-pointer font-semibold">
+            <button
+              className={`p-3 rounded-3xl cursor-pointer font-semibold ${
+                checkPayment
+                  ? "bg-red-600 text-white"
+                  : "bg-gray-300 text-black"
+              }`}
+            >
               Continue to Payment ₹{price}
             </button>
           </div>
@@ -150,6 +159,7 @@ const CheckOut = () => {
           }
 
           toast.success(`${selection} selected successfully`);
+          setCheckPayment(true);
           setModal(false);
 
           setCardDetails({

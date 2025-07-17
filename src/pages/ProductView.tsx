@@ -38,7 +38,7 @@ const ProductView = () => {
       // ✅ Show visual feedback
       setAddedItems((prev) => new Set([...prev, product.id]));
 
-      // ✅ Remove feedback after 2 seconds
+      // ✅ Remove feedback after 2 seconds   
       setTimeout(() => {
         setAddedItems((prev) => {
           const newSet = new Set(prev);
@@ -68,7 +68,7 @@ const ProductView = () => {
         <div className="text-center">
           <div className="text-red-600 text-6xl mb-4">⚠️</div>
           <h2 className="text-xl font-semibold text-red-600 mb-2">
-            Failed to fetch products
+            Failed to fetch products   
           </h2>
           <p className="text-gray-600">{error?.message}</p>
           <button

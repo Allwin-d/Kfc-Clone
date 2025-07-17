@@ -3,64 +3,54 @@ import KfcCart from "../media/kfcCart.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/Store";
 
 const Header = () => {
   const navigate = useNavigate();
+  const cartItems = useSelector((state: RootState) => state.cart);
 
-  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    navigate("/ProductView");
-  }
-
-  function handleSignIn(e: React.MouseEvent<HTMLHeadElement>) {
-    e.preventDefault();
-    navigate("/SignIn");
-  }
-
-  function handleCart(e: React.MouseEvent<HTMLHeadElement>) {
-    e.preventDefault();
-    navigate("/Cart");
-  }
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="sticky top-0 z-50 bg-white shadow-md">
-      {" "}
-      {/* Added sticky classes */}
-      <div className="flex flex-row w-full max-w-7xl mx-auto">
-        {" "}
-        {/* Added max-width and margin auto */}
-        <div className="flex flex-row justify-start w-full space-x-8 ml-10">
+    <header className="sticky top-0 z-50 bg-white shadow-md">
+      <div className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3">
+        {/* Left: Logo and Menu */}
+        <div className="flex items-center space-x-8">
           <img
             src={kfcLogo}
+            alt="KFC Logo"
+            width={50}
+            height={50}
             className="cursor-pointer"
             onClick={() => navigate("/")}
-            alt="Logo"
-            width={60}
-            height={60}
-          ></img>
-          <button onClick={handleClick} className="mt-3 cursor-pointer">
+          />
+          <button onClick={() => navigate("/ProductView")} className="text-gray-700 font-medium hover:text-red-600">
             Menu
           </button>
-          <button className="mt-3 cursor-pointer">Deals</button>
+          <button className="text-gray-700 font-medium hover:text-red-600">
+            Deals
+          </button>
         </div>
-        <div className="flex flex-row justify-end w-full space-x-8 mr-10">
-          <FontAwesomeIcon icon={faUser} className="mt-4" />
-          <h3 className="mt-3 cursor-pointer" onClick={handleSignIn}>
-            Sign In
-          </h3>
-          <h3 className="mt-3 cursor-pointer" onClick={handleCart}>
-            Cart
-          </h3>
-          <img
-            src={KfcCart}
-            alt="Cart"
-            width={60}
-            height={60}
-            className="cursor-pointer"
-          ></img>
+
+        {/* Right: Sign In and Cart */}
+        <div className="flex items-center space-x-6">
+          <div onClick={() => navigate("/SignIn")} className="flex items-center space-x-2 cursor-pointer">
+            <FontAwesomeIcon icon={faUser} className="text-gray-700" />
+            <span className="text-gray-700 hover:text-red-600 font-medium">Sign In</span>
+          </div>
+
+          <div onClick={() => navigate("/Cart")} className="relative cursor-pointer flex items-center">
+            <img src={KfcCart} alt="Cart" width={40} height={40} />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                {totalQuantity}
+              </span>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
