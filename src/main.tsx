@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux"; // ✅ Redux provider
 import Store from "./store/Store"; // ✅ Your configured store
+import Header from "./components/Header";
 
 const queryClient = new QueryClient();
 

@@ -5,6 +5,7 @@ import ProductView from "./pages/ProductView";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import CheckOut from "./pages/CheckOut";
+import Final from "./pages/Final";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/Cart" element={<Cart />}></Route>
         <Route path="/SignIn" element={<SignIn />}></Route>
         <Route path="/CheckOut" element={<CheckOut />}></Route>
+        <Route path="/Final" element={<Final />}></Route>
       </Routes>
     </div>
   );

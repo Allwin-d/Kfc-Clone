@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 import Modal from "../components/Modal";
 import CardDetails from "../components/CardDetails";
 import UpiDetails from "../components/UpiDetails";
-
 
 type PropsType = {
   price: number;
@@ -18,7 +17,7 @@ const CheckOut = () => {
   const { price, items } = location.state as PropsType;
   const [selection, setSelection] = useState("");
   const [checkPayment, setCheckPayment] = useState(false);
-
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
     fullname: "",
@@ -121,6 +120,7 @@ const CheckOut = () => {
             </p>
             <hr />
             <button
+              onClick={() => navigate("/Final",{state:{userData}})}
               className={`p-3 rounded-3xl cursor-pointer font-semibold ${
                 checkPayment
                   ? "bg-red-600 text-white"
@@ -228,6 +228,7 @@ const CheckOut = () => {
             />
             <span className="text-base font-medium">Cash</span>
           </label>
+
 
           {/* UPI */}
           <label
