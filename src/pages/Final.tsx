@@ -1,7 +1,5 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/Store";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 
 const Final = () => {
@@ -11,8 +9,7 @@ const Final = () => {
   console.log(userData);
 
   return (
-    <div>
-      <Header />
+    <div className="min-h-screen">
       <div className="flex flex-col space-y-3 justify-center items-center mt-4  ">
         <div className="font-bold text-4xl">Order Confirmed ✅ </div>
         <div className="text-gray-600  font-semibold text-xl">
@@ -22,7 +19,7 @@ const Final = () => {
       </div>
       <div className="flex flex-col space-y-4 mx-auto  ">
         {/* this is for order details section  */}
-        <div className="bg-gray-50 space-y-4 m-4 p-4">
+        <div className="bg-gray-50 space-y-4 m-4 p-4 mt-10">
           {cartItems.map((item) => {
             console.log(item);
             return (
@@ -57,7 +54,6 @@ const Final = () => {
 
         <div>{/* this is for user details section  */}</div>
       </div>
-      <Footer />
     </div>
   );
 };

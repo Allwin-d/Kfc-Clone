@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../store/Store";
 import type { CartItem } from "../Types";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import {
   removeFromCart,
   updateQuantity,
@@ -13,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const cartItems = useSelector((state: RootState) => state.cart); 
+  const cartItems = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
 
   // ✅ Calculate total price
@@ -45,7 +43,6 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">MY CART ({totalItems} items)</h1>
@@ -147,7 +144,7 @@ const Cart = () => {
                 className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold text-lg"
                 onClick={() =>
                   navigate("/CheckOut", {
-                    state:{price:totalPrice,items:totalItems},
+                    state: { price: totalPrice, items: totalItems },
                   })
                 }
               >
@@ -161,7 +158,6 @@ const Cart = () => {
           </p>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

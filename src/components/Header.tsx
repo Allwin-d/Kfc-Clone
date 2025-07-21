@@ -25,7 +25,10 @@ const Header = () => {
             className="cursor-pointer"
             onClick={() => navigate("/")}
           />
-          <button onClick={() => navigate("/ProductView")} className="text-gray-700 font-medium hover:text-red-600">
+          <button
+            onClick={() => navigate("/products")}
+            className="text-gray-700 font-medium hover:text-red-600"
+          >
             Menu
           </button>
           <button className="text-gray-700 font-medium hover:text-red-600">
@@ -35,12 +38,20 @@ const Header = () => {
 
         {/* Right: Sign In and Cart */}
         <div className="flex items-center space-x-6">
-          <div onClick={() => navigate("/SignIn")} className="flex items-center space-x-2 cursor-pointer">
+          <div
+            onClick={() => navigate("/SignIn")}
+            className="flex items-center space-x-2 cursor-pointer"
+          >
             <FontAwesomeIcon icon={faUser} className="text-gray-700" />
-            <span className="text-gray-700 hover:text-red-600 font-medium">Sign In</span>
+            <span className="text-gray-700 hover:text-red-600 font-medium">
+              Sign In
+            </span>
           </div>
 
-          <div onClick={() => navigate("/Cart")} className="relative cursor-pointer flex items-center">
+          <div
+            onClick={() => navigate("/Cart")}
+            className="relative cursor-pointer flex items-center"
+          >
             <img src={KfcCart} alt="Cart" width={40} height={40} />
             {totalQuantity > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">

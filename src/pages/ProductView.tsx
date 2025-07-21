@@ -1,6 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import axios from "axios";
 import type { Menu, Product } from "../Types";
 import { API_URL } from "../Api";
@@ -80,7 +78,6 @@ const ProductView = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <div className="w-full flex flex-row">
         <Sidebar />
         <div className="container mx-auto px-4 py-8 w-3/5 ml-96">
@@ -187,7 +184,6 @@ const ProductView = () => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };

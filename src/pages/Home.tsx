@@ -3,17 +3,15 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { Menu } from "../Types";
 import { API_URL } from "../Api";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
 
   const fetchDetails = async (): Promise<Menu> => {
-    const response = await axios.get<Menu>(API_URL);
-    console.log(response.data);
-    return response.data;
+    const data = await axios.get<Menu>(API_URL);
+    console.log(data.data);
+    return data.data;
   };
 
   const { data, isError, isLoading, error } = useQuery({
@@ -71,16 +69,15 @@ const Home = () => {
 
   return (
     <div className="flex flex-col space-y-4 h-auto">
-      <Header />
       <div>
         <img src={FrontPoster} className="rounded-md" alt="KFC Front Poster" />
       </div>
 
       {/* Browse categories section */}
-      <div className="w-full flex flex-col justify-center items-center">
-        <h1 className="font-bold text-3xl text-center">
-          BROWSE MENU CATEGORIES
-        </h1>
+      <div className="w-full flex flex-col justify-center items-center">     
+        <h1 className="font-bold text-3xl text-center">     
+          BROWSE MENU CATEGORIES     
+        </h1>     
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 mt-3 p-2">
           {data?.map((item) => {
             return (
@@ -108,7 +105,6 @@ const Home = () => {
           })}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
