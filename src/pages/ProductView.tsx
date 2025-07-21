@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import axios from "axios";
-import type { Menu, Product } from "../Types"; // ✅ Import Product type
+import type { Menu, Product } from "../Types";
 import { API_URL } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/CartSlice";
@@ -25,20 +25,16 @@ const ProductView = () => {
     queryFn: fetchAllProducts,
   });
 
-  // ✅ Get quantity of specific item in cart
   const getItemQuantity = (productId: number) => {
     const item = cartItems.find((cartItem) => cartItem.id === productId);
     return item ? item.quantity : 0;
   };
 
-  // ✅ FIXED: Handle add to cart with proper typing and error handling
   const handleAddToCart = (product: Product) => {
     try {
       dispatch(addToCart(product));
-      // ✅ Show visual feedback
       setAddedItems((prev) => new Set([...prev, product.id]));
 
-      // ✅ Remove feedback after 2 seconds   
       setTimeout(() => {
         setAddedItems((prev) => {
           const newSet = new Set(prev);
@@ -68,7 +64,7 @@ const ProductView = () => {
         <div className="text-center">
           <div className="text-red-600 text-6xl mb-4">⚠️</div>
           <h2 className="text-xl font-semibold text-red-600 mb-2">
-            Failed to fetch products   
+            Failed to fetch products
           </h2>
           <p className="text-gray-600">{error?.message}</p>
           <button
@@ -83,10 +79,10 @@ const ProductView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 ">
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="w-full flex flex-row ">
-        <Sidebar  />
+      <div className="w-full flex flex-row">
+        <Sidebar />
         <div className="container mx-auto px-4 py-8 w-3/5 ml-96">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
@@ -94,7 +90,11 @@ const ProductView = () => {
           </div>
 
           {data?.map((category) => (
-            <div key={category.id} className="mb-12">
+            <div
+              key={category.id}
+              id={`category-${category.id}`}
+              className="mb-12 scroll-mt-20"
+            >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-800">
                   {category.category}
@@ -166,7 +166,7 @@ const ProductView = () => {
                                 : "bg-red-600 text-white hover:bg-red-700"
                             }`}
                             onClick={() => handleAddToCart(product)}
-                            disabled={isJustAdded} // ✅ Prevent multiple clicks during feedback
+                            disabled={isJustAdded}
                           >
                             {isJustAdded ? "Added! ✓" : "Add to Cart"}
                           </button>
