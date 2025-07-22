@@ -13,11 +13,12 @@ const ProductView = () => {
   const cartItems = useSelector((state: RootState) => state.cart);
   const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
 
+  
   const fetchAllProducts = async (): Promise<Menu> => {
     const { data } = await axios.get<Menu>(API_URL);
     return data;
   };
-
+  
   const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["ProductView"],
     queryFn: fetchAllProducts,
