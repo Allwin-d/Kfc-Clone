@@ -43,16 +43,25 @@ const Final = () => {
               </div>
             );
           })}
-          <div>
-            <p>
-              {cartItems.reduce((acc, item) => {
-                return acc + item.price;
-              }, 0)}
-            </p>
+          
+          {/* Enhanced Total Amount Section */}
+          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg border-2 border-green-400 mt-6">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <span className="text-2xl">💰</span>
+                <span className="text-xl font-bold">Total Amount</span>
+              </div>
+              <div className="text-right">
+                <p className="text-3xl font-bold tracking-wide">
+                  ₹{cartItems.reduce((acc, item) => {
+                    return acc + item.price;
+                  }, 0)}
+                </p>
+                <p className="text-green-100 text-sm font-medium">Including all taxes</p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div>{/* this is for user details section  */}</div>
       </div>
     </div>
   );

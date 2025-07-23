@@ -5,24 +5,44 @@ import { API_URL } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/CartSlice";
 import type { AppDispatch, RootState } from "../store/Store";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Sidebar from "../components/Sidebar";
 
 const ProductView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart);
   const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  
   const fetchAllProducts = async (): Promise<Menu> => {
     const { data } = await axios.get<Menu>(API_URL);
     return data;
   };
-  
+
   const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["ProductView"],
     queryFn: fetchAllProducts,
   });
+
+  // Filter products based on search query
+  const filteredData = useMemo(() => {
+    if (!data || !searchQuery.trim()) return data;
+
+    const query = searchQuery.toLowerCase().trim();
+
+    return data
+      .map((category) => ({
+        ...category,
+        products: category.products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query) ||
+            product.description.toLowerCase().includes(query) ||
+            product.type.toLowerCase().includes(query) ||
+            category.category.toLowerCase().includes(query)
+        ),
+      }))
+      .filter((category) => category.products.length > 0);
+  }, [data, searchQuery]);
 
   const getItemQuantity = (productId: number) => {
     const item = cartItems.find((cartItem) => cartItem.id === productId);
@@ -44,6 +64,10 @@ const ProductView = () => {
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
   };
 
   if (isLoading) {
@@ -87,7 +111,105 @@ const ProductView = () => {
             <p className="text-gray-600">Discover our delicious offerings</p>
           </div>
 
-          {data?.map((category) => (
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-md mx-auto">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search products, categories, or descriptions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-red-600 focus:border-red-600 sm:text-sm"
+              />
+              {searchQuery && (
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <button
+                    onClick={clearSearch}
+                    className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                  >
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Search Results Info */}
+            {searchQuery && (
+              <div className="text-center mt-4">
+                <p className="text-gray-600">
+                  {filteredData && filteredData.length > 0 ? (
+                    <>
+                      Showing results for "
+                      <span className="font-semibold text-gray-800">
+                        {searchQuery}
+                      </span>
+                      "
+                      {filteredData.reduce(
+                        (total, category) => total + category.products.length,
+                        0
+                      ) === 1 ? (
+                        <span> - 1 product found</span>
+                      ) : (
+                        <span>
+                          {" "}
+                          -{" "}
+                          {filteredData.reduce(
+                            (total, category) =>
+                              total + category.products.length,
+                            0
+                          )}{" "}
+                          products found
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      No results found for "
+                      <span className="font-semibold text-gray-800">
+                        {searchQuery}
+                      </span>
+                      "
+                      <button
+                        onClick={clearSearch}
+                        className="ml-2 text-red-600 hover:text-red-700 underline"
+                      >
+                        Clear search
+                      </button>
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {filteredData?.map((category) => (
             <div
               key={category.id}
               id={`category-${category.id}`}
@@ -96,6 +218,12 @@ const ProductView = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-800">
                   {category.category}
+                  {searchQuery && (
+                    <span className="ml-2 text-lg font-normal text-gray-600">
+                      ({category.products.length}{" "}
+                      {category.products.length === 1 ? "item" : "items"})
+                    </span>
+                  )}
                 </h2>
                 <div className="h-1 flex-1 bg-gradient-to-r from-red-600 to-transparent ml-4"></div>
               </div>
@@ -140,7 +268,7 @@ const ProductView = () => {
                             <span className="text-red-600 font-bold text-lg">
                               ₹{product.price}
                             </span>
-                            {product.originalPrice && (
+                            {product?.originalPrice && (
                               <span className="text-gray-400 line-through text-sm">
                                 ₹{product.originalPrice}
                               </span>
@@ -182,9 +310,27 @@ const ProductView = () => {
               </div>
             </div>
           ))}
+
+          {/* No results message */}
+          {searchQuery && (!filteredData || filteredData.length === 0) && (
+            <div className="text-center py-12">
+              <div className="text-gray-400 text-6xl mb-4">🔍</div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                No products found
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Try adjusting your search terms or browse our categories
+              </p>
+              <button
+                onClick={clearSearch}
+                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Show All Products
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
     </div>
   );
 };
