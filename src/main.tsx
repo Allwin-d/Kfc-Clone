@@ -15,7 +15,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={Store}>
       {" "}
-      {/* ✅ Redux Provider wraps everything */}
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Header />

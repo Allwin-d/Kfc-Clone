@@ -14,12 +14,12 @@ const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
 
-  // ✅ Calculate total price
+  // Calculate total price
   const totalPrice = cartItems.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
 
-  // ✅ Calculate total items
+  // Calculate total items
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
@@ -62,7 +62,7 @@ const Cart = () => {
             <ul className="space-y-4">
               {cartItems.map((item: CartItem, index) => (
                 <li
-                  key={`${item.id}-${index}`} // ✅ Fixed: unique key for each cart entry
+                  key={`${item.id}-${index}`} 
                   className="flex items-center justify-between border p-4 rounded shadow bg-white"
                 >
                   <div className="flex items-center gap-4">

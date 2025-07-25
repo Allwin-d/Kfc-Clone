@@ -13,10 +13,8 @@ const cartSlice = createSlice({
       const existingItem = state.find((item) => item.id === action.payload.id);
 
       if (existingItem) {
-        // ✅ If item exists, increase quantity
         existingItem.quantity += 1;
       } else {
-        // ✅ If item doesn't exist, add with quantity 1
         state.push({
           ...action.payload,
           quantity: 1,
@@ -61,7 +59,6 @@ const cartSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   addToCart,
   removeFromCart,
@@ -70,5 +67,4 @@ export const {
   clearCart,
 } = cartSlice.actions;
 
-// Export reducer
 export default cartSlice.reducer;
