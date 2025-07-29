@@ -21,7 +21,7 @@ const ProductView = () => {
 
   const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["ProductView"],
-    queryFn: fetchAllProducts,
+    queryFn: fetchAllProducts
   });
 
   // Filter products based on search query
@@ -29,7 +29,6 @@ const ProductView = () => {
     if (!data || !searchQuery.trim()) return data;
 
     const query = searchQuery.toLowerCase().trim();
-
     return data
       .map((category) => ({
         ...category,
@@ -311,7 +310,7 @@ const ProductView = () => {
             </div>
           ))}
 
-          {/* No results message */}
+          {/* No results  message */}
           {searchQuery && (!filteredData || filteredData.length === 0) && (
             <div className="text-center py-12">
               <div className="text-gray-400 text-6xl mb-4">🔍</div>

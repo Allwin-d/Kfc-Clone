@@ -6,7 +6,7 @@ import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import CheckOut from "./pages/CheckOut";
 import Final from "./pages/Final";
-import Deals from "./pages/Deals";
+import Offers from "./pages/Offers";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/checkout" element={<CheckOut />} />
         <Route path="/final" element={<Final />} />
-        <Route path="/deals" element={<Deals />} />
+        <Route path="/offers" element={<Offers />} />
       </Routes>
     </div>
   );

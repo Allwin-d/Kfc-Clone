@@ -31,8 +31,11 @@ const Header = () => {
           >
             Menu
           </button>
-          <button className="text-gray-700 font-medium hover:text-red-600">
-            Deals
+          <button
+            className="text-gray-700 font-medium hover:text-red-600"
+            onClick={() => navigate("/offers")}
+          >
+            Offers
           </button>
         </div>
 
