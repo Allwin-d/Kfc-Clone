@@ -19,6 +19,14 @@ const Home = () => {
     queryFn: fetchDetails,
   });
 
+  if (!data) {
+    return;
+  }
+  if (isLoading) return <p>Loading..</p>;
+  if (isError) return <p>Error </p>;
+  console.log(data);
+  console.log(API_URL);
+
   // Function to navigate to ProductView and scroll to specific category
   const navigateToCategory = (categoryId: number) => {
     navigate("/products");
@@ -73,35 +81,36 @@ const Home = () => {
       </div>
 
       {/* Browse categories section */}
-      <div className="w-full flex flex-col justify-center items-center">     
-        <h1 className="font-bold text-3xl text-center">     
-          BROWSE MENU CATEGORIES     
-        </h1>     
+      <div className="w-full flex flex-col justify-center items-center">
+        <h1 className="font-bold text-3xl text-center">
+          BROWSE MENU CATEGORIES
+        </h1>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 mt-3 p-2">
-          {data?.map((item) => {
-            return (
-              <div
-                key={item.id}
-                className="bg-gray-200 p-4 cursor-pointer transition hover:scale-105 duration-200 rounded-lg shadow-md hover:shadow-lg"
-                onClick={() => navigateToCategory(item.id)}
-              >
-                <img
-                  className="w-full h-48 object-cover rounded-md mb-3"
-                  src={item.products[0].imageUrl}
-                  alt={item.category}
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/270x190?text=No+Image";
-                  }}
-                />
-                <div className="text-center">
-                  <span className="font-semibold text-lg text-gray-800 hover:text-red-600 transition-colors">
-                    {item.category}
-                  </span>
+          {data.length > 0 &&
+            data?.map((item) => {
+              return (
+                <div
+                  key={item.id}
+                  className="bg-gray-200 p-4 cursor-pointer transition hover:scale-105 duration-200 rounded-lg shadow-md hover:shadow-lg"
+                  onClick={() => navigateToCategory(item.id)}
+                >
+                  <img
+                    className="w-full h-48 object-cover rounded-md mb-3"
+                    src={item.products[0].imageUrl}
+                    alt={item.category}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://via.placeholder.com/270x190?text=No+Image";
+                    }}
+                  />
+                  <div className="text-center">
+                    <span className="font-semibold text-lg text-gray-800 hover:text-red-600 transition-colors">
+                      {item.category}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>
