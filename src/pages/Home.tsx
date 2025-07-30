@@ -4,17 +4,18 @@ import axios from "axios";
 import type { Menu } from "../Types";
 import { API_URL } from "../Api.ts";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const [error, setError] = useState<string | null>(null);
   const fetchDetails = async (): Promise<Menu> => {
     const data = await axios.get<Menu>(API_URL);
     console.log(data.data);
     return data.data;
   };
 
-  const { data, isError, isLoading, error } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["menu"],
     queryFn: fetchDetails,
   });
@@ -23,7 +24,9 @@ const Home = () => {
     return;
   }
   if (isLoading) return <p>Loading..</p>;
-  if (isError) return <p>Error </p>;
+  if (isError) {
+    setError(isError ? "something is wrong" : null);
+  }
   console.log(data);
   console.log(API_URL);
 
@@ -62,7 +65,7 @@ const Home = () => {
           <h2 className="text-xl font-semibold text-red-600 mb-2">
             Failed to Fetch Data
           </h2>
-          <p className="text-gray-600">{error || "Something went wrong"}</p>
+          <p className="text-gray-600">{error}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
