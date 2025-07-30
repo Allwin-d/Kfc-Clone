@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Menu } from "../Types";
 import axios from "axios";
-import { API_URL } from "../Api";
+import { API_URL } from "../Api.ts";
 
 const Sidebar = () => {
   const fetchproduct = async (): Promise<Menu> => {

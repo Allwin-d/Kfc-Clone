@@ -44,13 +44,16 @@ const SignIn = () => {
           <span className="underline cursor-pointer">Privacy Policy</span> and{" "}
           <span className="underline cursor-pointer">Terms&Conditions</span>
         </p>
-        <button className="rounded-lg text-white bg-red-600 p-3 hover:bg-red-700 transition duration-100 ease-in">
+        <button
+          className="rounded-lg text-white bg-red-600 p-3 hover:bg-red-700 transition duration-100 ease-in"
+          onClick={() => handleHome(phoneNumber)}
+        >
           Send Me a Code
         </button>
         <p>Or</p>
         <button
-          onClick={() => handleHome(phoneNumber)}
           className="w-full py-2 border-black rounded-lg border-2 p-1"
+          onClick={() => navigate("/")}
         >
           Skip, Continue As Guest
         </button>{" "}

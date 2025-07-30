@@ -2,7 +2,7 @@ import FrontPoster from "../media/FrontPoster.jpg";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { Menu } from "../Types";
-import { API_URL } from "../Api";
+import { API_URL } from "../Api.ts";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {

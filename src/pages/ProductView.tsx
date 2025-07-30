@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { Menu, Product } from "../Types";
-import { API_URL } from "../Api";
+import { API_URL } from "../Api.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/CartSlice";
 import type { AppDispatch, RootState } from "../store/Store";

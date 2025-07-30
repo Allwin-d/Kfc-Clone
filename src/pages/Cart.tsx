@@ -48,7 +48,7 @@ const Cart = () => {
           <h1 className="text-2xl font-bold">MY CART ({totalItems} items)</h1>
           {cartItems.length > 0 && (
             <button
-              onClick={() => handleClearCart}
+              onClick={handleClearCart}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
             >
               Clear Cart
@@ -62,7 +62,7 @@ const Cart = () => {
             <ul className="space-y-4">
               {cartItems.map((item: CartItem, index) => (
                 <li
-                  key={`${item.id}-${index}`} 
+                  key={`${item.id}-${index}`}
                   className="flex items-center justify-between border p-4 rounded shadow bg-white"
                 >
                   <div className="flex items-center gap-4">
