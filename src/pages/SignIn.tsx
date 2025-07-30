@@ -1,12 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import KfcLogo from "../media/kfcLogo.svg";
+import { useState } from "react";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const [phoneNumber, setphoneNumber] = useState("");
 
-  function handleHome(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    navigate("/");
+  function handleHome(value: string) {
+    const str = value.trim();
+    if (str.length <= 9) {
+      window.alert("Please Enter Correct Number ...");
+    } else {
+      navigate("/");
+    }
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setphoneNumber(e.target.value);
   }
 
   return (
@@ -24,6 +34,8 @@ const SignIn = () => {
             type="number"
             placeholder="Phone Number *"
             className="p-4 focus:outline-none font-mono -mb-8 w-full"
+            onChange={handleChange}
+            value={phoneNumber}
           ></input>
           <hr></hr>
         </div>
@@ -37,7 +49,7 @@ const SignIn = () => {
         </button>
         <p>Or</p>
         <button
-          onClick={handleHome}
+          onClick={() => handleHome(phoneNumber)}
           className="w-full py-2 border-black rounded-lg border-2 p-1"
         >
           Skip, Continue As Guest

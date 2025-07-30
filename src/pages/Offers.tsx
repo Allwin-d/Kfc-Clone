@@ -1,13 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../store/Store";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/Store";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { Menu } from "../Types";
+import type { Menu, Product } from "../Types";
 import { API_URL } from "../Api";
+import { addToCart } from "../slices/CartSlice";
+import { useState } from "react";
 
 const Offers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const cartItems = useSelector((state: RootState) => state.cart);
+  const [addedCart,setaddedCart] = useState(0);
 
   const fetchDealDetails = async () => {
     const { data } = await axios.get<Menu>(API_URL);
@@ -25,7 +27,8 @@ const Offers = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <h2 className="text-2xl font-semibold">Loading Data...</h2>
+          <h2 
+          className="text-2xl font-semibold">Loading Data...</h2>
         </div>
       </div>
     );
@@ -59,6 +62,17 @@ const Offers = () => {
     );
   }
 
+  function handleCart(product: Product) {
+    try {
+      dispatch(addToCart(product));
+      setaddedCart((prev)=>{
+        return prev+1;
+      })
+    } catch (error) {
+      console.error("Failed to Add Product to Cart");
+    }
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen  py-6 flex justify-center items-center ">
       {data?.map((item, i) => {
@@ -84,20 +98,24 @@ const Offers = () => {
                           alt={org.name}
                           className="rounded-lg"
                         ></img>
-                        <p>{org.name}</p>
-                        <p>{org.type}</p>
-                        <p>
-                          Price :{org.price} {""}
+                        <p className="font-medium text-xl  ">{org.name}</p>
+                        <p className="font-sans text-[15px]">{org.type}</p>
+                        <p className="font-bold">
+                          ₹:{org.price} {""}
                           {""}
                           {""}
                           <small className="line-through">
                             {org.originalPrice}
                           </small>
                         </p>
-                        <button className="bg-red-600 text-white rounded-lg hover:bg-red-700 hover:transition duration-200 ease-in py-3">
+                        <button
+                          onClick={() => handleCart(org)}
+                          className="bg-red-600 text-white rounded-lg hover:bg-red-700 hover:transition duration-200 ease-in py-3"
+                        >
                           {" "}
                           Add To Cart{" "}
                         </button>
+                        {addedCart}
                       </div>
                     </div>
                   </div>
