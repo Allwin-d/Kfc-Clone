@@ -9,7 +9,8 @@ import { useState } from "react";
 
 const Offers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [addedCart,setaddedCart] = useState(0);
+  // Track added items per product using product ID or index
+  const [addedItems, setAddedItems] = useState<{ [key: string]: number }>({});
 
   const fetchDealDetails = async () => {
     const { data } = await axios.get<Menu>(API_URL);
@@ -17,7 +18,7 @@ const Offers = () => {
     return data;
   };
 
-  const { isError, isLoading, data, error } = useQuery({
+  const { isError, isLoading, data } = useQuery({
     queryKey: ["Deals"],
     queryFn: fetchDealDetails,
   });
@@ -27,8 +28,7 @@ const Offers = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <h2 
-          className="text-2xl font-semibold">Loading Data...</h2>
+          <h2 className="text-2xl font-semibold">Loading Data...</h2>
         </div>
       </div>
     );
@@ -43,15 +43,11 @@ const Offers = () => {
               <p className="text-4xl font-semibold">
                 ❌ Failed to Fetch Products{" "}
               </p>
-              <button
-                onClick={() => window.location.reload()}
-                className=""
-              ></button>
-            </div>{" "}
+            </div>
             <div>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 hover:transition duration-150 ease-in "
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 hover:transition duration-150 ease-in"
               >
                 Click to Reload
               </button>
@@ -62,12 +58,13 @@ const Offers = () => {
     );
   }
 
-  function handleCart(product: Product) {
+  function handleCart(product: Product, productKey: string) {
     try {
       dispatch(addToCart(product));
-      setaddedCart((prev)=>{
-        return prev+1;
-      })
+      setAddedItems((prev) => ({
+        ...prev,
+        [productKey]: (prev[productKey] || 0) + 1,
+      }));
     } catch (error) {
       console.error("Failed to Add Product to Cart");
     }
@@ -86,6 +83,8 @@ const Offers = () => {
                 return val.discount;
               })
               .map((org, j) => {
+                const productKey = `${i}-${j}`; // Unique key for each product
+                const addedCount = addedItems[productKey] || 0;
                 return (
                   <div
                     key={j}
@@ -109,13 +108,19 @@ const Offers = () => {
                           </small>
                         </p>
                         <button
-                          onClick={() => handleCart(org)}
+                          onClick={() => handleCart(org, productKey)}
                           className="bg-red-600 text-white rounded-lg hover:bg-red-700 hover:transition duration-200 ease-in py-3"
                         >
                           {" "}
                           Add To Cart{" "}
                         </button>
-                        {addedCart}
+                        {addedCount > 0 && addedCount && (
+                          <div>
+                            <p className="font-medium text-[15px]">
+                              Added Items : {addedCount}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
