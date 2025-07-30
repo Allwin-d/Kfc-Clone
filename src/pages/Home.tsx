@@ -1,7 +1,7 @@
 import FrontPoster from "../media/FrontPoster.jpg";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { Menu } from "../Types";
+import type { Menu, Category } from "../Types";
 import { API_URL } from "../Api.ts";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const Home = () => {
     return data.data;
   };
 
-  const { data, isError, isLoading, error } = useQuery<Menu, Error, Menu>({
+  const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["menu"],
     queryFn: fetchDetails,
   });
@@ -92,7 +92,7 @@ const Home = () => {
         </h1>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 mt-3 p-2">
           {data.length > 0 &&
-            data?.map((item) => {
+            data?.map((item: Category) => {
               return (
                 <div
                   key={item.id}
