@@ -62,7 +62,7 @@ const Home = () => {
           <h2 className="text-xl font-semibold text-red-600 mb-2">
             Failed to Fetch Data
           </h2>
-          <p className="text-gray-600">{error}</p>
+          <p className="text-gray-600">{error || "Something went wrong"}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
