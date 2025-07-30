@@ -8,14 +8,14 @@ import { useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const fetchDetails = async (): Promise<Menu> => {
     const data = await axios.get<Menu>(API_URL);
     console.log(data.data);
     return data.data;
   };
 
-  const { data, isError, isLoading } = useQuery({
+  const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["menu"],
     queryFn: fetchDetails,
   });
@@ -24,9 +24,7 @@ const Home = () => {
     return;
   }
   if (isLoading) return <p>Loading..</p>;
-  if (isError) {
-    setError(isError ? "something is wrong" : null);
-  }
+
   console.log(data);
   console.log(API_URL);
 
@@ -56,7 +54,6 @@ const Home = () => {
       </div>
     );
   }
-
   if (isError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -65,7 +62,7 @@ const Home = () => {
           <h2 className="text-xl font-semibold text-red-600 mb-2">
             Failed to Fetch Data
           </h2>
-          <p className="text-gray-600">{error}</p>
+          <p className="text-gray-600">{error.message}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
