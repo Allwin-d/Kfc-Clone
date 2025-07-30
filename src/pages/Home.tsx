@@ -15,11 +15,10 @@ const Home = () => {
     return data.data;
   };
 
-  const { data, isError, isLoading, error } = useQuery<Menu, Error>({
+  const { data, isError, isLoading, error } = useQuery<Menu, Error, Menu>({
     queryKey: ["menu"],
     queryFn: fetchDetails,
   });
-
   if (!data) {
     return;
   }
