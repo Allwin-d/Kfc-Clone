@@ -4,11 +4,10 @@ import axios from "axios";
 import type { Menu } from "../Types";
 import { API_URL } from "../Api.ts";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
-  // const [error, setError] = useState<string | null>(null);
+
   const fetchDetails = async (): Promise<Menu> => {
     const data = await axios.get<Menu>(API_URL);
     console.log(data.data);
@@ -19,13 +18,6 @@ const Home = () => {
     queryKey: ["menu"],
     queryFn: fetchDetails,
   });
-  if (!data) {
-    return;
-  }
-  if (isLoading) return <p>Loading..</p>;
-
-  console.log(data);
-  console.log(API_URL);
 
   // Function to navigate to ProductView and scroll to specific category
   const navigateToCategory = (categoryId: number) => {
@@ -53,6 +45,7 @@ const Home = () => {
       </div>
     );
   }
+
   if (isError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -61,13 +54,26 @@ const Home = () => {
           <h2 className="text-xl font-semibold text-red-600 mb-2">
             Failed to Fetch Data
           </h2>
-          <p className="text-gray-600">{error.message}</p>
+          <p className="text-gray-600">
+            {error?.message || "An error occurred"}
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
           >
             Try Again
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle case where data might be undefined
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">No data available</h2>
         </div>
       </div>
     );
