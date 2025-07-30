@@ -9,7 +9,6 @@ import { useState } from "react";
 
 const Offers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // Track added items per product using product ID or index
   const [addedItems, setAddedItems] = useState<{ [key: string]: number }>({});
 
   const fetchDealDetails = async () => {

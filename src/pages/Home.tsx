@@ -21,7 +21,7 @@ const Home = () => {
 
   // Function to navigate to ProductView and scroll to specific category
   const navigateToCategory = (categoryId: number) => {
-    navigate("/products"); // Adjust the route path according to your routing setup
+    navigate("/products");
 
     // Small delay to ensure the page loads before scrolling
     setTimeout(() => {
