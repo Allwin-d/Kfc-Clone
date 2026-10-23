@@ -44,8 +44,8 @@ const Cart = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">MY CART ({totalItems} items)</h1>
+        <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold">MY CART ({totalItems} items)</h1>
           {cartItems.length > 0 && (
             <button
               onClick={handleClearCart}
@@ -63,24 +63,24 @@ const Cart = () => {
               {cartItems.map((item: CartItem, index) => (
                 <li
                   key={`${item.id}-${index}`}
-                  className="flex items-center justify-between border p-4 rounded shadow bg-white"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border p-4 rounded shadow bg-white"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 min-w-0">
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-20 h-20 object-cover rounded"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded shrink-0"
                     />
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-lg font-semibold">{item.name}</h2>
                       <p className="text-sm text-gray-600">{item.type}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 break-words">
                         {item.description}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4">
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-2">
                       <button
@@ -131,12 +131,12 @@ const Cart = () => {
             {/* Cart Summary */}
             <div className="bg-gray-100 p-6 rounded-lg">
               <div className="flex justify-between items-center mb-4">
-                <span className="text-xl font-semibold">Total Items:</span>
+                <span className="text-base sm:text-xl font-semibold">Total Items:</span>
                 <span className="text-xl">{totalItems}</span>
               </div>
               <div className="flex justify-between items-center mb-4">
-                <span className="text-xl font-semibold">Total Price:</span>
-                <span className="text-2xl font-bold text-red-600">
+                <span className="text-base sm:text-xl font-semibold">Total Price:</span>
+                <span className="text-xl sm:text-2xl font-bold text-red-600">
                   ₹{totalPrice.toFixed(2)}
                 </span>
               </div>

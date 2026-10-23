@@ -36,51 +36,52 @@ const Footer = () => {
   ];
 
   return (
-    <div className="flex flex-row bg-black/85 text-white p-5 w-full items-center justify-center gap-12">
+    <footer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 bg-black/85 text-white p-6 sm:p-8 w-full items-start gap-6 lg:gap-8">
       <img
         src="https://images.ctfassets.net/wtodlh47qxpt/25FSYFuEtGct8NSrtpKe6d/b602f6fe0bf294e6a6dff5d7648bf594/KFC_Logo.svg?h=120&w=120&fm=webp&fit=fill"
         alt="Kfc Logo"
-        className="w-20 h-20"
+        className="w-16 h-16 sm:w-20 sm:h-20"
       ></img>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 text-sm sm:text-base">
         {KfcIndia.map((item) => {
-          return <h2 className="cursor-pointer">{item}</h2>;
+          return <h2 key={item} className="cursor-pointer">{item}</h2>;
         })}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 text-sm sm:text-base">
         {Legal.map((item) => {
-          return <h2 className="cursor-pointer">{item}</h2>;
+          return <h2 key={item} className="cursor-pointer">{item}</h2>;
         })}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 text-sm sm:text-base">
         {KfcFood.map((item) => {
-          return <h2 className="cursor-pointer">{item}</h2>;
+          return <h2 key={item} className="cursor-pointer">{item}</h2>;
         })}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 text-sm sm:text-base">
         {Support.map((item) => {
-          return <h2 className="cursor-pointer">{item}</h2>;
+          return <h2 key={item} className="cursor-pointer">{item}</h2>;
         })}
       </div>
-      <div className="flex flex-row gap-1">
+      <div className="flex flex-row gap-1 text-sm sm:text-base">
         <img
           src="https://images.ctfassets.net/wtodlh47qxpt/6qgKpWUOIsrIiazhk3cdmF/d60b4c20be69bab1f939bf33348b67e9/Find_KFC.svg?h=15&w=11&fm=webp&fit=fill"
           alt="location-icon"
         ></img>
         <h2 className="underline cursor-pointer">Find a KFC </h2>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-row sm:flex-col flex-wrap gap-3 sm:gap-4 col-span-2 sm:col-span-1">
         {AppLink.map((item) => {
           return (
             <img
+              key={item}
               src={item}
               alt="app-link"
-              className="cursor-pointer gap-4 w-50 h-10"
+              className="cursor-pointer w-28 sm:w-32 h-auto"
             ></img>
           );
         })}
       </div>
-    </div>
+    </footer>
   );
 };
 

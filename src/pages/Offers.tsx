@@ -1,9 +1,8 @@
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/Store";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import type { Menu, Product } from "../Types";
-import { API_URL } from "../Api.ts";
+import type { Product } from "../Types";
+import { fetchMenu } from "../Api";
 import { addToCart } from "../slices/CartSlice";
 import { useState } from "react";
 
@@ -11,15 +10,9 @@ const Offers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [addedItems, setAddedItems] = useState<{ [key: string]: number }>({});
 
-  const fetchDealDetails = async () => {
-    const { data } = await axios.get<Menu>(API_URL);
-    console.log("This is the data from deals page : ", data);
-    return data;
-  };
-
   const { isError, isLoading, data } = useQuery({
     queryKey: ["Deals"],
-    queryFn: fetchDealDetails,
+    queryFn: fetchMenu,
   });
 
   if (isLoading) {
@@ -64,18 +57,18 @@ const Offers = () => {
         ...prev,
         [productKey]: (prev[productKey] || 0) + 1,
       }));
-    } catch (error) {
+    } catch {
       console.error("Failed to Add Product to Cart");
     }
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen  py-6 flex justify-center items-center ">
+    <div className="bg-gray-100 min-h-screen py-6 px-4 flex justify-center items-start">
       {data?.map((item, i) => {
         return (
           <div
             key={i}
-            className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 "
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 w-full max-w-6xl"
           >
             {item.products
               .filter((val) => {
@@ -87,7 +80,7 @@ const Offers = () => {
                 return (
                   <div
                     key={j}
-                    className="   border-2 rounded-lg hover:scale-95 hover:transition duration-500 ease-in cursor-pointer bg-white w-3/4  p-5 hover:shadow-lg"
+                    className="border-2 rounded-lg hover:scale-[0.98] transition duration-300 ease-in cursor-pointer bg-white w-full p-4 sm:p-5 hover:shadow-lg"
                   >
                     <div className="">
                       <div className="flex flex-col space-y-2">

@@ -20,18 +20,18 @@ const SignIn = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center  ">
-      <div className=" w-1/3  space-y-8 text-center ">
+    <div className="w-full min-h-screen flex flex-col items-center justify-center px-4 py-8">
+      <div className="w-full max-w-lg space-y-6 sm:space-y-8 text-center">
         <p className="font-bold text-1xl">Sign In / Sign up</p>
         <div className="flex flex-row justify-center">
           <img src={KfcLogo} alt="Logo" className=""></img>
         </div>
-        <p className="font-bold text-2xl">
+        <p className="font-bold text-xl sm:text-2xl">
           LET'S SIGN IN OR CREATE ACCOUNT WITH YOUR PHONE NUMBER
         </p>
         <div className="flex flex-col space-y-6">
           <input
-            type="number"
+            type="tel"
             placeholder="Phone Number *"
             className="p-4 focus:outline-none font-mono -mb-8 w-full"
             onChange={handleChange}

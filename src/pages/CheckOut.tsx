@@ -85,11 +85,11 @@ const CheckOut = () => {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="flex flex-row mt-10 m-20 justify-between items-center">
-        <div className="w-3/5 bg-gray-100 p-8 rounded-lg">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-6 sm:mt-10 mx-auto max-w-7xl px-4 sm:px-8 lg:px-10 pb-8 items-stretch lg:items-start">
+        <div className="w-full lg:w-3/5 bg-gray-100 p-4 sm:p-8 rounded-lg">
           <form>
-            <fieldset className="flex flex-col space-y-8">
-              <legend className="font-bold text-4xl">Customer Details</legend>
+            <fieldset className="flex flex-col space-y-5 sm:space-y-8">
+              <legend className="font-bold text-2xl sm:text-4xl">Customer Details</legend>
               <input
                 type="text"
                 name="fullname"
@@ -127,7 +127,7 @@ const CheckOut = () => {
           </form>
         </div>
 
-        <div className="w-1/3 border border-gray-300 rounded-lg p-6 bg-white shadow-lg">
+        <div className="w-full lg:w-1/3 border border-gray-300 rounded-lg p-5 sm:p-6 bg-white shadow-lg">
           <div className="flex flex-col space-y-6">
             <h3 className="font-bold text-black text-2xl">Order Summary</h3>
             <div className="flex justify-between items-center">
@@ -218,7 +218,7 @@ const CheckOut = () => {
         }}
       >
         {/* Payment Method Inputs */}
-        <h2 className="text-xl font-semibold mb-6 text-center">
+        <h2 className="text-lg sm:text-xl font-semibold mb-6 text-center">
           Select Your Payment Method
         </h2>
 

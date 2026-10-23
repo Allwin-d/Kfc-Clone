@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import type { Menu, Product } from "../Types";
-import { API_URL } from "../Api.ts";
+import { fetchMenu } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/CartSlice";
 import type { AppDispatch, RootState } from "../store/Store";
@@ -14,14 +13,9 @@ const ProductView = () => {
   const [addedItems, setAddedItems] = useState<Set<number>>(new Set());
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const fetchAllProducts = async (): Promise<Menu> => {
-    const { data } = await axios.get<Menu>(API_URL);
-    return data;
-  };
-
   const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["ProductView"],
-    queryFn: fetchAllProducts
+    queryFn: fetchMenu
   });
 
   // Filter products based on search query
@@ -102,11 +96,11 @@ const ProductView = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="w-full flex flex-row">
+      <div className="w-full flex flex-col lg:flex-row">
         <Sidebar />
-        <div className="container mx-auto px-4 py-8 w-3/5 ml-96">
+        <main className="container mx-auto px-4 py-5 sm:py-8 w-full min-w-0 flex-1">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Our Menu</h1>
             <p className="text-gray-600">Discover our delicious offerings</p>
           </div>
 
@@ -227,7 +221,7 @@ const ProductView = () => {
                 <div className="h-1 flex-1 bg-gradient-to-r from-red-600 to-transparent ml-4"></div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
                 {category.products.map((product) => {
                   const quantity = getItemQuantity(product.id);
                   const isJustAdded = addedItems.has(product.id);
@@ -328,7 +322,7 @@ const ProductView = () => {
               </button>
             </div>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );

@@ -1,22 +1,15 @@
 import FrontPoster from "../media/FrontPoster.jpg";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import type { Menu, Category } from "../Types";
-import { API_URL } from "../Api.ts";
+import { fetchMenu } from "../Api";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const fetchDetails = async (): Promise<Menu> => {
-    const data = await axios.get<Menu>(API_URL);
-    console.log(data.data);
-    return data.data;
-  };
-
   const { data, isError, isLoading, error } = useQuery<Menu, Error>({
     queryKey: ["menu"],
-    queryFn: fetchDetails,
+    queryFn: fetchMenu,
   });
 
   // Function to navigate to ProductView and scroll to specific category
@@ -68,31 +61,29 @@ const Home = () => {
     );
   }
 
-  // Handle case where data might be undefined
-  if (!data) {
+  if (!data || data.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-semibold">No data available</h2>
+          <h2 className="text-xl font-semibold">No menu categories available</h2>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col space-y-4 h-auto">
+    <div className="flex flex-col space-y-6 h-auto">
       <div>
-        <img src={FrontPoster} className="rounded-md" alt="KFC Front Poster" />
+        <img src={FrontPoster} className="w-full max-h-[560px] object-cover rounded-md" alt="KFC Front Poster" />
       </div>
 
       {/* Browse categories section */}
       <div className="w-full flex flex-col justify-center items-center">
-        <h1 className="font-bold text-3xl text-center">
+        <h1 className="font-bold text-2xl sm:text-3xl text-center">
           BROWSE MENU CATEGORIES
         </h1>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 mt-3 p-2">
-          {data.length > 0 &&
-            data?.map((item: Category) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 lg:gap-10 mt-3 p-3 sm:p-5 w-full max-w-7xl">
+          {data.map((item: Category) => {
               return (
                 <div
                   key={item.id}
@@ -101,7 +92,7 @@ const Home = () => {
                 >
                   <img
                     className="w-full h-48 object-cover rounded-md mb-3"
-                    src={item.products[0].imageUrl}
+                    src={item.products[0]?.imageUrl ?? ""}
                     alt={item.category}
                     onError={(e) => {
                       e.currentTarget.src =
